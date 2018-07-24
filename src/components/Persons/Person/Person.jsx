@@ -4,7 +4,7 @@ import classes from './Person.css';
 
 const person = ( props ) => {
   const rnd = Math.random();
-  if (rnd > 0.5) {
+  if (rnd > 1) {
     throw new Error('Something went wrong');
   }
 
