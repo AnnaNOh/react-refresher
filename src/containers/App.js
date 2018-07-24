@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
-import WithClass from '../components/hoc/WithClass';
+import Aux from '../components/hoc/Aux';
+import withClass from '../components/hoc/withClass';
 
 // PureComponent has shouldComponentUpdate in it already
 // only use PureComponent for parent components that need the check
@@ -19,7 +20,8 @@ class App extends PureComponent {
         {id: 'asdf11', name: "Stephanie", age: 26}
       ],
       button: "unclicked",
-      showPersons: false
+      showPersons: false,
+      toggleClicked: 0
     }
   }
 
@@ -86,7 +88,13 @@ class App extends PureComponent {
   togglePersonsHandler = () => {
   // this sets up rather than togglerPersonsHandler() = ensures this can be used
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    // can't do toggleClicked: this.state.toggleClicked++, because setState is async
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1
+      }
+    });
   }
 
   // React can't have if statement in its return but you can use turnary
@@ -103,18 +111,18 @@ class App extends PureComponent {
     }
 
     return (
-        <WithClass classes={classes.App}>
+        <Aux>
           <button onClick={()=> {this.setState({showPersons: true})}}> Show Persons </button>
           <Cockpit
             showPersons={this.state.showPersons}
             persons={this.state.persons}
             clicked={this.togglePersonsHandler} />
           {persons}
-        </WithClass>
+        </Aux>
     );
     // return React.createElement('div', {className:'App'}, React.createElement('h1', null, "Hi, this is the App"));
   }
 }
 
 // higher order component
-export default App;
+export default withClass(App, classes.App);
