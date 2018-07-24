@@ -1,13 +1,20 @@
 import React from 'react';
 import classes from './Cockpit.css';
 
+// use functional components as often as possible because they cannot manage state
+// they only present information 
+
 const cockpit = (props) => {
+  let btnClass = '';
   const assignedClasses = [];
   if (props.persons.length <= 2){
     assignedClasses.push(classes.red);
   }
   if (props.persons.length <= 1){
     assignedClasses.push(classes.bold);  // classes = ['red', 'bold']
+  }
+  if (props.showPersons){
+    btnClass = classes.Red;
   }
 
   return (
@@ -16,10 +23,10 @@ const cockpit = (props) => {
       <p className={assignedClasses.join(' ')}> This is really working! </p>
       <button
         className={btnClass}
-        onClick={this.togglePersonsHandler}> click this
+        onClick={props.clicked}> click this
       </button>
     </div>
   )
 };
 
-export default cockit;
+export default cockpit;

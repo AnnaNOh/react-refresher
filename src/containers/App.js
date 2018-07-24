@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
-
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
   state = {
@@ -26,15 +26,13 @@ class App extends Component {
     const personIndex = this.state.persons.findIndex(p => {
       return p.id === id;
     });
-
+    // const person = Object.assign({}, this.state.persons[personIndex]); does the same thing but in ES5
     const person = {
       ...this.state.persons[personIndex]
     };
-    // const person = Object.assign({}, this.state.persons[personIndex]); does the same thing but in ES5
     person.name = event.target.value;
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-
     this.setState( {persons: persons} );
   }
 
@@ -48,28 +46,21 @@ class App extends Component {
   // Should put the conditional in the render instead of return
   render() {
     let persons = null;
-    let btnClass = '';
-
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          <Persons
+      persons = <Persons
             persons={this.state.persons}
             clicked={this.deletePersonHandler}
-            changed={this.nameChangedHandler} />
-        </div>
-      );
-      btnClass = classes.Red;
+            changed={this.nameChangedHandler} />;
     }
 
     return (
-
         <div className={classes.App}>
-
+          <Cockpit
+            showPersons={this.state.showPersons}
+            persons={this.state.persons}
+            clicked={this.togglePersonsHandler} />
           {persons}
-
         </div>
-
     );
     // return React.createElement('div', {className:'App'}, React.createElement('h1', null, "Hi, this is the App"));
   }
